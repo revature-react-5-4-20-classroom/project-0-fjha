@@ -4,8 +4,11 @@ import { User } from '../models/User';
 import { PoolClient, QueryResult } from 'pg';
 import { connectionPool } from '.';
 import { Reimbursement} from "../models/Reimbursement";
+import { ReimbursementAll} from "../models/ReimbursementAll";
+import { ReimbursementWithId} from "../models/ReimbursementWithId";
 import { ReimbursementStatus} from "../models/ReimbursementStatus";
 import { ReimbursementType} from "../models/ReimbursementType";
+import { query } from 'express';
 
 
 
@@ -53,7 +56,7 @@ export function getUserById(id: number) : User {
 // Add Reimbursement Request.
 export async function getAllReimbursementRequest(){
   let client : PoolClient;
-  console.log(" In getAllReimbursementRequest "  );
+  console.log(" In getAllReimbursementRequest ------"  );
   client = await connectionPool.connect();
   try {
     let result : QueryResult;
@@ -66,8 +69,30 @@ export async function getAllReimbursementRequest(){
       join reimbursementstatus on reimbursement .status =reimbursementstatus .statusid ;`
     );
     
-    console.log(" Results : " +result );
-    return result;
+    //console.log("  reimbursement Results : " +result );
+    //return result;
+    /*
+ id: number;
+   firstname:string;
+   lastname:string;
+   email:string;
+   amount:number;
+   datesubmitted:string;
+   dateresolved:string;
+   status:number;
+   type:number;
+
+    */
+    for(let row of result.rows) {
+      console.log(row.username);
+    }
+    return result.rows.map((u) => {
+      return new ReimbursementAll(u.id, u.firstname, u.lastname, u.email,u.amount,u.datesubmitted, u.dateresolved,u.status,u.type
+        );
+    });
+
+
+
   }
   catch(e)
   {
@@ -82,11 +107,11 @@ export async function getreimById(id:number)
 {
   let anotherResult = new Array();
   let client : PoolClient;
-  console.log(" In getreimById "  + id );
+  //console.log(" In getreimById "  + id );
   client = await connectionPool.connect();
   try {
     let result : QueryResult;
-    console.log(" In getreimById  Query"  );
+    //console.log(" In getreimById  Query"  );
     result = await client.query(
       `select Users.id , Users.firstname ,Users.lastname ,Users.email , Reimbursement.amount ,Reimbursement.datesubmitted ,
       Reimbursement.dateresolved ,Reimbursement.status, Reimbursement."type" from Users join reimbursement 
@@ -94,19 +119,42 @@ export async function getreimById(id:number)
       join reimbursementtype on reimbursement ."type" = reimbursementtype .typeid 
       join reimbursementstatus on reimbursement .status = reimbursementstatus .statusid where Users.id = $1 ;`,[id]
     );
-   /*
-    let i=result.rowCount;
-    let row;
-    for(let j=0 ;j<i;j++)
-    {
-      row=result.rows[j];
-      anotherResult.push(row);
-      console.log(" In getreimById  Query" + row );
-    }*/
+    
+    //let i=result.rowCount;
+    //let row;
+    //let results=(result.rows);
+   //console.log("  String :"+ JSON.stringify(result.rows));
+   // console.log(result.rows[0] );
+   //console.log("  getreimById : resultset  "+ JSON.parse(result));
    
     //console.log(result.rows[0]);
+    //console.log("  Only rows :"+result.rows);
+    //let results=result.rows.toString;
+   // return results;
+   /*id: number;
+   firstname:string;
+   lastname:string;
+   email:string;
+   amount:number;
+   datesubmitted:string;
+   dateresolved:string;
+   status:number;
+   type:number;
 
-    return result;
+    */
+    for(let row of result.rows) {
+      console.log(row.username);
+    }
+    return result.rows.map((u) => {
+      return new ReimbursementWithId(u.id, u.firstname, u.lastname, u.email,u.amount,u.datesubmitted, u.dateresolved,u.status,u.type
+        );
+    });
+
+
+
+
+
+
   }
   catch(e)
   {

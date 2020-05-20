@@ -1,6 +1,8 @@
 import express, { Router, Request, Response, NextFunction } from 'express';
 import { User } from '../models/User';
 import {Reimbursement} from '../models/Reimbursement'
+import {ReimbursementAll} from '../models/ReimbursementAll'
+import {ReimbursementWithId} from '../models/ReimbursementWithId'
 import { authAdminMiddleware, authRoleFactory } from '../middleware/authMiddleware';
 import { getAllUsers, addNewUser} from '../repository/user-data-access';
 
@@ -43,7 +45,14 @@ reimbursementRouter.post('/', async (req: Request, res: Response) => {
 
 reimbursementRouter.get('/allreq' , async (req: Request, res: Response) => {
   
-  res.json(getAllReimbursementRequest());
+  try {
+    // get all users, using async/await
+    const reim : ReimbursementAll[] = await getAllReimbursementRequest();
+    res.json(reim);
+    } catch (e) {
+     // next(e);
+    }
+ // res.json(getAllReimbursementRequest());
   
 
 });
@@ -52,24 +61,41 @@ reimbursementRouter.get('/:reimbyid' , async (req: Request, res: Response) => {
 
   const id= +req.params.reimbyid;
   console.log(" In get by id " + id);
-  //if(isNaN(id)) {
-  //  res.status(400).send('Must include numeric id in path');
- // } else {
+  if(isNaN(id)) {
+   res.status(400).send('Must include numeric id in path');
+ } else {
+   /*
   try{
-
-   //res.setHeader('Content-Type', 'application/json');
-  console.log(JSON.stringify(getreimById(id)));
-  res.json(JSON.stringify(getreimById(id)));
-  //res.(JSON.stringify(getreimById(id)));
   
-  //.json(getreimById(id));
-  //res.send(getreimById(id));
+      let resultsreceived=JSON.stringify(getreimById(id));
+      let resultsreceivedJson=JSON.parse(resultsreceived);
+     // console.log("  Results "+ getreimById(id));
+     // res.status(400).send('You are getting records '+ resultsreceived) ;
+     //res.type('application/json');
+    // res.send(getreimById(id));
+    // res.set('Content-Type', 'text/csv').send(getreimById(id));
+     //  let requestString=   (JSON.stringify(getreimById(id)));
+    //   requestString= requestString.replace("[" ,"");
+    //   requestString= requestString.replace("]" ,"");
+    console.log("  request received :"+( (getreimById(id))).toString);
+    console.log("  request sending :");
+    //res.send(resultsreceived);
+     //res.json(JSON.stringify(getreimById(id)));
+    //  res.json(requestString);
+    // res.format(res.send(getreimById(id)));
+    res.json(getreimById(id));
+*/
+try {
+  // get all users, using async/await
+  const reim : ReimbursementWithId[] = await getreimById(id);
+  res.json(reim);
+  } catch (e) {
+   // next(e);
+  
+
   }
-  catch(e)
-  {
-    console.log(e.meaage);
-  }
-  //}
+  
+}
  // res.json(getAllReimbursementRequest());
  //res.json(getreimById(id));
 
