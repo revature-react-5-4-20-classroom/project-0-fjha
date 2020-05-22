@@ -60,19 +60,11 @@ userRouter.patch('/', async (req: Request, res: Response)=>
         //client.query("SET search_path TO project_zero");
         if(!args.id)
         {
-<<<<<<< HEAD
             res.status(400).send('Must include user id in request');
-=======
-            res.status(400).send('Should include user id in request');
->>>>>>> 1c9c02bb697034ee56a69d33687682b809815206
         }
 
         for(let i in args)
         {
-<<<<<<< HEAD
-=======
-            
->>>>>>> 1c9c02bb697034ee56a69d33687682b809815206
             if(i === "id")
             {
             }

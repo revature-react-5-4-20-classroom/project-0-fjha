@@ -46,11 +46,7 @@ app.post('/login',  async (req: Request, res: Response)=>
     }
 })
 
-<<<<<<< HEAD
 app.listen(1995, () => {
-=======
-app.listen(1999, () => {
->>>>>>> 1c9c02bb697034ee56a69d33687682b809815206
 
     // The following involves 3 different async steps.  Right now we're in a callback
     // function that runs asynchronously when the express application starts.
