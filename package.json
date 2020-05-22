@@ -5,8 +5,12 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "nodemon --exec ts-node src/index.ts",
+<<<<<<< HEAD
     "test": "echo \"testing not yet configured\" && exit 1",
     "deploy":"ts-node src/index.ts"
+=======
+    "test": "echo \"testing not yet configured\" && exit 1"
+>>>>>>> 1c9c02bb697034ee56a69d33687682b809815206
   },
   "author": "Flora Jha",
   "license": "ISC",
