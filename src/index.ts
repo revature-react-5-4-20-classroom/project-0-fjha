@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, Request, Response, response, request } from "express";
 import bodyParser from 'body-parser';
 import { PoolClient, QueryResult } from "pg";
 import { connectionPool } from "../repository";
@@ -9,7 +9,13 @@ import { sessionMiddleware } from "../middleware/sessionMiddleware";
 import { reimbursementRouter } from "../routers/reimbursementRouter";
 
 const app: Application = express();
+
+app.get('/new-endpoint', (req:Request, res: Response)  =>{
+  res.send('webhooks worked !');
+})
 const PORT = 1995;
+
+
 
 app.use(bodyParser.json());
 app.use(sessionMiddleware);
