@@ -76,6 +76,7 @@ app.listen(1995, () => {
         client.query('SELECT * FROM users;').then(
           (result : QueryResult) => {
             console.log(result.rows[0]);
+            
           }
         )
     }).catch((err)=>{

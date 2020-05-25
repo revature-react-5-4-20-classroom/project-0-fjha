@@ -29,6 +29,39 @@ export async function findReimbursementByStatusId(id: number): Promise<Reimburse
         client && client.release();
     }
 }
+//findReimbursementByStatusIdAndDate()
+
+export async function findReimbursementByStatusIdAndDate(id: number , date_submittedS: number , date_submittedE: number): Promise<Reimbursements[]> 
+{
+     let client: PoolClient
+    client = await connectionPool.connect();
+   // client.query("SET search_path TO project_zero");
+    try
+    {
+        let result: QueryResult
+        result = await client.query(`SELECT * FROM reimbursements WHERE $1 = status AND   date_submitted > $2 AND date_submitted < $3 ORDER BY date_submitted`,
+         [id , date_submittedS ,date_submittedE]);
+        const matchingReim = result.rows.map((r)=>
+        {
+            return new Reimbursements(r.id, r.author, r.amount, r.date_submitted, r.date_resolved, r.description, r.resolver, r.status, r.type)
+        })
+        console.log(matchingReim);
+        return matchingReim;
+   
+    }
+    catch(e)
+    {
+        throw new Error(`Query failed ......... ${e.message}`);
+    }
+    finally
+    {
+        client && client.release();
+    }
+}
+
+
+
+
 export async function findReimbursementByUserId(id: number): Promise<Reimbursements[]> 
 {
     let client: PoolClient

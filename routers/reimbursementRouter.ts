@@ -2,7 +2,7 @@ import { PoolClient, QueryResult } from "pg";
 import { connectionPool } from "../repository";
 import express, { Application, Response, Request } from "express";
 import { Reimbursements } from "../models/Reimbursements";
-import {findReimbursementByStatusId, findReimbursementByUserId, addNewReimbursement, findReimbursementById} from "../repository/reimbursement-data-access"
+import {findReimbursementByStatusId, findReimbursementByUserId, addNewReimbursement, findReimbursementById ,findReimbursementByStatusIdAndDate} from "../repository/reimbursement-data-access"
 import { checkLogin} from "../middleware/authMiddleware";
 
 export const reimbursementRouter: Application = express();
@@ -59,6 +59,62 @@ reimbursementRouter.get('/userId/:id', async (req: Request, res: Response)=>
     }
 
 })
+
+/*
+For a challenge you could do this instead:  
+  `/reimbursements/status/:statudId/date-submitted?start=:startDate&end=:endDate`
+
+*/
+
+reimbursementRouter.get('/status/:id/:startDate/:endDate', checkLogin());
+reimbursementRouter.get('/status/:id/:startDate/:endDate', async (req: Request, res: Response)=>
+{
+    const id = +req.params.id;
+    const startDate=+req.params.startDate;
+    const endDate=+req.params.endDate;
+    if(isNaN(id))
+    {
+        res.status(400).send('Must include numeric id in path');
+    }
+    else if(id !== 1 && id !== 2 && id !== 3)
+    {
+        res.status(400).send('Enter a valid status ID: 1, 2 or 3');
+    }
+    else if(req.session && req.session.user.role !== 'Financial Manager')
+    {
+        res.status(401).send('You are not authorized to view this page');
+    }
+    else if(isNaN(startDate))
+    {
+     res.status(400).send('Must include start date in path');   
+    }
+    else if(isNaN(endDate))
+    {
+     res.status(400).send('Must include end date in path');   
+    }
+    else
+    {
+        const reimbursements: Reimbursements[] = await findReimbursementByStatusIdAndDate(id,startDate,endDate);
+        res.json(reimbursements);
+        
+    }
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 reimbursementRouter.post('/', async (req: Request, res: Response)=>
 {
