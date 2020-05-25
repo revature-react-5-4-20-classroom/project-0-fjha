@@ -235,7 +235,7 @@ Reimbursements should be ordered by date
       Reimbursement
     ```
 
-# Stretch Goals
+# Stretch Goals for this project
 These are not part of the core requirements but are things that could be worked on once the core requirements are done.
   * Password Hashing
   * Paging ans Sorting endpoints: [Reference For How](https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design#filter-and-paginate-data)
