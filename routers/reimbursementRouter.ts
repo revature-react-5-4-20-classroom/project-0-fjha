@@ -61,7 +61,7 @@ reimbursementRouter.get('/userId/:id', async (req: Request, res: Response)=>
 })
 
 /*
-For a challenge you could do this instead:  
+For a challenge you could do this instead:  status id with date range
   `/reimbursements/status/:statudId/date-submitted?start=:startDate&end=:endDate`
 
 */
