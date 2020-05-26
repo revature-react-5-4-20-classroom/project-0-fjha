@@ -76,11 +76,7 @@ userRouter.patch('/', async (req: Request, res: Response)=>
             else if(i === "password")
             {
                 let result: QueryResult = await client.query(`UPDATE users SET password = $1 WHERE id = $2`, [args[i], args.id]);
-            }
-            else if(i === "email")
-            {
-                let result: QueryResult = await client.query(`UPDATE users SET email = $1 WHERE id = $2`, [args[i], args.id]);
-            }
+            }           
             else if(i === "first_name")
             {
                 let result: QueryResult = await client.query(`UPDATE users SET first_name = $1 WHERE id = $2`, [args[i], args.id]);
@@ -89,12 +85,16 @@ userRouter.patch('/', async (req: Request, res: Response)=>
             {
                 let result: QueryResult = await client.query(`UPDATE users SET last_name = $1 WHERE id = $2`, [args[i], args.id]);
             }
+            else if(i === "email")
+            {
+                let result: QueryResult = await client.query(`UPDATE users SET email = $1 WHERE id = $2`, [args[i], args.id]);
+            }
             else if(i === "role")
             {
                 if(args.role !== "Financial Manager")
                 {
                     let result: QueryResult;
-                    result = await client.query(`UPDATE users SET role_id = 2 where id = $1`, [args.id]);
+                    result = await client.query(`UPDATE users SET role_id = 3 where id = $1`, [args.id]);
                 }
                 if(args.role === "Admin")
                 {
@@ -104,7 +104,7 @@ userRouter.patch('/', async (req: Request, res: Response)=>
                 if(args.role === "User")
                 {
                     let result: QueryResult;
-                    result = await client.query(`UPDATE users SET role_id = 1 where id = $1`, [args.id]);
+                    result = await client.query(`UPDATE users SET role_id = 2 where id = $1`, [args.id]);
                 }
             }
 
