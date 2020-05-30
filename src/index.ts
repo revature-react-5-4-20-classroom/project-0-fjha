@@ -7,6 +7,7 @@ import { userRouter } from "../routers/userRouter";
 import { findUserByUsernamePassword } from "../repository/user-data-access";
 import { sessionMiddleware } from "../middleware/sessionMiddleware";
 import { reimbursementRouter } from "../routers/reimbursementRouter";
+import { bookRouter } from "../routers/bookRouter";
 
 const app: Application = express();
 
@@ -79,6 +80,12 @@ app.listen(1995, () => {
             
           }
         )
+        client.query('SELECT * FROM books;').then(
+          (result : QueryResult) => {
+            console.log(result.rows[4]);
+            
+          }
+        )
     }).catch((err)=>{
       console.error(err.message);
     })
@@ -87,3 +94,4 @@ app.listen(1995, () => {
 
 app.use('/users', userRouter);
 app.use('/reimbursements', reimbursementRouter);
+app.use('/books', bookRouter);
