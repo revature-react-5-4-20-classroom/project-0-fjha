@@ -8,6 +8,7 @@ import { findUserByUsernamePassword } from "../repository/user-data-access";
 import { sessionMiddleware } from "../middleware/sessionMiddleware";
 import { reimbursementRouter } from "../routers/reimbursementRouter";
 import { bookRouter } from "../routers/bookRouter";
+import {corsFilter} from "../middleware/corsFilter";
 
 const app: Application = express();
 
@@ -18,7 +19,7 @@ app.get('/new-endpoint', (
 const PORT = 1995;
 
 
-
+app.use(corsFilter);
 app.use(bodyParser.json());
 app.use(sessionMiddleware);
 
